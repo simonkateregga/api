@@ -11,6 +11,11 @@ use App\Api\Transformers\TagTransformer;
 class TagsController extends apiController
 {
 
+    /**
+     * Transformer property.
+     * 
+     * @var TagTransformer
+     */
     protected $tagTransformer;
 
     
@@ -19,7 +24,11 @@ class TagsController extends apiController
         $this->tagTransformer = $tagTransformer;
     }
 
-
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index($lessonId = null) 
     {
         $tags = $this->getTags($lessonId);
@@ -29,6 +38,12 @@ class TagsController extends apiController
             ]);       
     }
 
+    /**
+     * Get the lesson's tags
+     * 
+     * @param  Integer $lessonId 
+     * @return Tag           
+     */
     public function getTags($lessonId = null) 
     {
         return $lessonId ? Lesson::findorfail($lessonId)->tags : Tag::all();

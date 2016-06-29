@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 
 use Response;
-use Illuminate\Http\Response as IlluminateResponse;
 use App\Http\Requests;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response as IlluminateResponse;
 
 class ApiController extends Controller
 {
@@ -67,7 +67,7 @@ class ApiController extends Controller
         return $this->respond([
                         'error' => [
                             'message' => $message,
-                            'status code' => $this->getStatusCode()
+                            'status_code' => $this->getStatusCode()
                         ]]);
     }
     /**
@@ -76,8 +76,8 @@ class ApiController extends Controller
      * @param  string $message
      * @return Response          
      */
-    public function respond($response) {
-        return Response::json($response);
+    public function respond($response, $headers = []) {
+        return Response::json($response, $this->getStatusCode(), $headers);
     }
 
     /**

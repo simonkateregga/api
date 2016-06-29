@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Response;
-use App\Http\Requests;
 use App\Lesson;
+use App\Http\Requests;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use App\Api\Transformers\LessonTransformer;
 
 class LessonsController extends ApiController
@@ -18,7 +19,7 @@ class LessonsController extends ApiController
     public function __construct(LessonTransformer $lessonTransformer) 
     {
         $this->lessonTransformer = $lessonTransformer;
-        $this->middleware('auth.basic', ['only' => 'store']);
+        //$this->middleware('auth.basic', ['only' => 'store']);
     }
 
     /**
