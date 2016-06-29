@@ -7,6 +7,7 @@ use Response;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as IlluminateResponse;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 
 class ApiController extends Controller
 {
@@ -103,5 +104,26 @@ class ApiController extends Controller
     public function respondFailedValidation($message) {
         return $this->setStatusCode(IlluminateResponse::HTTP_UNPROCESSABLE_ENTITY)
                     ->respondWithError($message);
+    }
+
+    /**
+     * Add pagination to the response.
+     * 
+     * @param  LengthAwarePaginator $lessons 
+     * @param  array $data    
+     * @return Response
+     */
+    public function respondWithPagination(Paginator $object, $data) {
+        $data = array_merge($data, [
+            'Paginator' => [
+                'total_count' => $object->total(),
+                'total_pages' => $object->lastPage(),
+                'current_page' => $object->currentPage(),
+                'next_page' => $object->nextPageUrl(),
+                'previous_page' => $object->previousPageUrl(),
+                'limit' => $object->perPage()
+            ]
+        ]);
+        return $this->respond($data);
     }
 }

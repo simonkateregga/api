@@ -29,10 +29,11 @@ class LessonsController extends ApiController
      */
     public function index()
     {
-        $lessons = Lesson::all();
+        $limit = Input::get('limit') ?: 5;
+        $lessons = Lesson::paginate($limit);
 
-        return $this->respond([
-                'data' => $this->lessonTransformer->transformCollection($lessons->all())
+        return $this->respondWithPagination($lessons, [
+            'data' => $this->lessonTransformer->transformCollection($lessons->all()),
             ]);
     }
 
