@@ -115,7 +115,7 @@ class ApiController extends Controller
      */
     public function respondWithPagination(Paginator $object, $data) {
         $data = array_merge($data, [
-            'Paginator' => [
+            'paginator' => [
                 'total_count' => $object->total(),
                 'total_pages' => $object->lastPage(),
                 'current_page' => $object->currentPage(),

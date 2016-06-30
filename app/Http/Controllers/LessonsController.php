@@ -19,7 +19,7 @@ class LessonsController extends ApiController
     public function __construct(LessonTransformer $lessonTransformer) 
     {
         $this->lessonTransformer = $lessonTransformer;
-        //$this->middleware('auth.basic', ['only' => 'store']);
+        $this->middleware('auth.basic', ['only' => 'store']);
     }
 
     /**

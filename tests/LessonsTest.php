@@ -38,21 +38,34 @@ class LessonsTest extends ApiTester
 
         $this->assertResponseStatus(404);
         $this->assertObjectHasAttribute('status_code', $lesson);
-        $this->assertEquals($lesson->status_code, 404);       
+        $this->seeStatusCode(404);       
     }
 
     /** @test */
     public function it_creates_a_new_lesson_given_valid_parameters() 
     {
-        $this->getJson('api/v1/lessons', 'POST', $this->getStub());
+        $this->withoutMiddleware()->post('api/v1/lessons', $this->getStub());
         $this->assertResponseStatus(201);
+        $this->seeStatusCode(201);       
     }
 
     /** @test */
     public function it_throws_422_if_new_lesson_request_fails_validation() 
     {
-        $this->getJson('api/v1/lessons', 'POST');
+        $this->withoutMiddleware()->getJson('api/v1/lessons', 'POST');
         $this->assertResponseStatus(422);
+        $this->seeStatusCode(422);       
+    }
+
+    /** @test */
+    public function it_paginates_when_multiple_lessons_are_created()
+    {
+        $this->times(20)->make('App\Lesson');
+        $paginator = $this->getJson('api/v1/lessons')->paginator;
+
+        $this->assertObjectHasAttributes($paginator, 'total_count', 'total_pages', 'current_page', 'limit');
+        $this->assertEquals($paginator->total_count, 20);
+        $this->assertEquals($paginator->current_page, 1);
     }
 
     /**
@@ -67,7 +80,5 @@ class LessonsTest extends ApiTester
             'body' =>$this->fake->paragraph,
             'some_bool' => $this->fake->boolean
         ];
-    }
-
-    
+    }   
 }
